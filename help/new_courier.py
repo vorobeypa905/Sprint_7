@@ -1,3 +1,4 @@
+import allure
 import requests
 import random
 import string
@@ -7,13 +8,13 @@ from data.url import Url
 
 
 
-# метод генерирует строку, состоящую только из букв нижнего регистра, в качестве параметра передаём длину строки
+@allure.step("Метод генерирует строку, состоящую только из букв нижнего регистра, в качестве параметра передаём длину строки")
 def generate_random_string(length):
     letters = string.ascii_lowercase
     random_string = ''.join(random.choice(letters) for i in range(length))
     return random_string
 
-# метод регистрации нового курьера возвращает список из логина и пароля
+@allure.step("Метод регистрации нового курьера возвращает список из логина и пароля")
 # если регистрация не удалась, возвращает пустой список
 def register_new_courier_and_return_login_password():
     # создаём список, чтобы метод мог его вернуть
@@ -43,7 +44,7 @@ def register_new_courier_and_return_login_password():
     # возвращаем список
     return login_pass
 
-# Создание и регистрация курьера
+@allure.step("Создание и регистрация курьера")
 def new_courier():
     login_pass = register_new_courier_and_return_login_password()
 
@@ -54,7 +55,7 @@ def new_courier():
     }
 
     return new_courier_data
-# Метод создает случайного курьера
+@allure.step("Метод создает случайного курьера")
 def new_login_pass_fname():
     login_pass_fname = {
         "login": generate_random_string(10),
@@ -64,7 +65,7 @@ def new_login_pass_fname():
 
     return login_pass_fname
 
-# Получение id курьера, которого надо удалить
+@allure.step("Получение id курьера, которого надо удалить")
 def get_courier_id(login, password):
     payload = {
         "login": login,
@@ -74,7 +75,7 @@ def get_courier_id(login, password):
 
     return response_login.json()["id"]
 
-# Удаление курьера
+@allure.step("Удаление курьера")
 def delete_courier(login, password):
     id = get_courier_id(login, password)
     url = f'{Url.BASE_URL}{Url.COURIER_URL}/{id}'
